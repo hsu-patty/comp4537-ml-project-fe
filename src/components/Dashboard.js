@@ -27,6 +27,9 @@ const Dashboard = () => {
             Logout
           </button>
         </div>
+        <div className='card-body text-center'>
+          <a href='/recommendations' className='btn btn-primary'>Recommendations</a>
+        </div>
       </div>
     </div>
   );
