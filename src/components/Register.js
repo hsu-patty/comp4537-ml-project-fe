@@ -9,7 +9,7 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://myWebAPIServer.ca/api/auth/register", {
+      await axios.post("http://localhost:3001/api/auth/register", {
         email,
         password,
       });
@@ -20,25 +20,33 @@ const Register = () => {
   };
 
   return (
-    <div>
-      <h1>Register</h1>
-      <form onSubmit={handleSubmit}>
-        <label>Email:</label>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <label>Password:</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <button type="submit">Register</button>
-        {message && <div>{message}</div>}
+    <div className="container my-5">
+      <h1 className="text-center">Register</h1>
+      <form onSubmit={handleSubmit} className="w-50 mx-auto">
+        <div className="mb-3">
+          <label className="form-label">Email:</label>
+          <input
+            type="email"
+            className="form-control"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+        <div className="mb-3">
+          <label className="form-label">Password:</label>
+          <input
+            type="password"
+            className="form-control"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+        <button type="submit" className="btn btn-primary w-100">
+          Register
+        </button>
+        {message && <div className="alert alert-info mt-3">{message}</div>}
       </form>
     </div>
   );

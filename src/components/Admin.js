@@ -6,25 +6,40 @@ const Admin = () => {
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const response = await axios.get(
-        "http://myWebAPIServer.ca/api/auth/admin",
-        { withCredentials: true }
-      );
+      const response = await axios.get("http://localhost:3001/api/admin", {
+        withCredentials: true,
+      });
       setUsers(response.data);
     };
     fetchUsers();
   }, []);
 
+  const handleLogout = async () => {
+    await axios.post("http://localhost:3001/api/auth/logout");
+    window.location.href = "/";
+  };
+
   return (
-    <div>
-      <h1>Admin Dashboard</h1>
-      <ul>
-        {users.map((user) => (
-          <li key={user._id}>
-            {user.firstName} ({user.email})
-          </li>
-        ))}
-      </ul>
+    <div className="container my-5">
+      <h1 className="text-center">Admin Dashboard</h1>
+      <div className="card mt-4">
+        <div className="card-body">
+          <h5 className="card-title">Registered Users</h5>
+          <ul className="list-group">
+            {users.map((user) => (
+              <li className="list-group-item" key={user._id}>
+                <strong>User Email:</strong> {user.email} <br />
+                <strong>API Calls Used:</strong> {user.apiCalls}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+      <div className="text-center mt-4">
+        <button className="btn btn-danger" onClick={handleLogout}>
+          Logout
+        </button>
+      </div>
     </div>
   );
 };

@@ -10,37 +10,50 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://myWebAPIServer.ca/api/auth/login",
-        { email, password }
+        "http://localhost:3001/api/auth/login",
+        { email, password },
+        { withCredentials: true }
       );
       localStorage.setItem("apiCalls", response.data.apiCalls);
-      // Redirect to dashboard
-      window.location.href = "/dashboard";
+
+      if (response.data.isAdmin) {
+        window.location.href = "/admin";
+      } else {
+        window.location.href = "/dashboard";
+      }
     } catch (err) {
       setError(err.response.data.error);
     }
   };
 
   return (
-    <div>
-      <h1>Login</h1>
-      <form onSubmit={handleSubmit}>
-        <label>Email:</label>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <label>Password:</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <button type="submit">Login</button>
-        {error && <div>{error}</div>}
+    <div className="container my-5">
+      <h1 className="text-center">Login</h1>
+      <form onSubmit={handleSubmit} className="w-50 mx-auto">
+        <div className="mb-3">
+          <label className="form-label">Email:</label>
+          <input
+            type="email"
+            className="form-control"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+        <div className="mb-3">
+          <label className="form-label">Password:</label>
+          <input
+            type="password"
+            className="form-control"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+        {error && <div className="alert alert-danger">{error}</div>}
+        <button type="submit" className="btn btn-primary w-100">
+          Login
+        </button>
       </form>
     </div>
   );
