@@ -14,7 +14,8 @@ const Register = () => {
         {
           email,
           password,
-        }
+        },
+        { withCredentials: true }
       );
       setMessage("Registration successful! You can now log in.");
     } catch (err) {

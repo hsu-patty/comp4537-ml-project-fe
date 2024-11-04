@@ -18,9 +18,13 @@ const Admin = () => {
   }, []);
 
   const handleLogout = async () => {
-    await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/auth/logout`);
+    await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/auth/logout`,
+      {},
+      { withCredentials: true }
+    );
     window.location.href = "/";
   };
+
 
   return (
     <div className="container my-5">
