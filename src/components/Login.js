@@ -14,13 +14,16 @@ const Login = () => {
         { email, password },
         { withCredentials: true }
       );
-      localStorage.setItem("apiCalls", response.data.apiCalls);
+      //set number of api calls
+      localStorage.setItem("api Calls", response.data.apiCalls);
 
+      //see if the user is admin
       if (response.data.isAdmin) {
         window.location.href = "/admin";
       } else {
         window.location.href = "/dashboard";
       }
+
     } catch (err) {
       setError(err.response.data.error);
     }
