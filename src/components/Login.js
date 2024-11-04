@@ -16,11 +16,11 @@ const Login = () => {
       );
       localStorage.setItem("apiCalls", response.data.apiCalls);
 
-      // if (response.data.isAdmin) {
-      //   window.location.href = "/admin";
-      // } else {
-      //   window.location.href = "/dashboard";
-      // }
+      if (response.data.isAdmin) {
+        window.location.href = "/admin";
+      } else {
+        window.location.href = "/dashboard";
+      }
     } catch (err) {
       setError(err.response.data.error);
     }
