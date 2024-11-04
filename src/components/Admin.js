@@ -6,7 +6,7 @@ const Admin = () => {
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const response = await axios.get("http://localhost:3001/api/admin", {
+      const response = await axios.get(`${process.env.SERVER_URL}/api/admin`, {
         withCredentials: true,
       });
       setUsers(response.data);
@@ -15,7 +15,7 @@ const Admin = () => {
   }, []);
 
   const handleLogout = async () => {
-    await axios.post("http://localhost:3001/api/auth/logout");
+    await axios.post(`${process.env.SERVER_URL}/api/auth/logout`);
     window.location.href = "/";
   };
 
