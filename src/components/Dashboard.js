@@ -6,7 +6,7 @@ const Dashboard = () => {
   const [error, setError] = useState("");
 
   const handleLogout = async () => {
-    await axios.post(`${process.env.SERVER_URL}/api/auth/logout`);
+    await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/auth/logout`);
     window.location.href = "/";
   };
 

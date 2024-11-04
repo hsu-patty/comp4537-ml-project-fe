@@ -6,16 +6,19 @@ const Admin = () => {
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const response = await axios.get(`${process.env.SERVER_URL}/api/admin`, {
-        withCredentials: true,
-      });
+      const response = await axios.get(
+        `${process.env.REACT_APP_SERVER_URL}/api/admin`,
+        {
+          withCredentials: true,
+        }
+      );
       setUsers(response.data);
     };
     fetchUsers();
   }, []);
 
   const handleLogout = async () => {
-    await axios.post(`${process.env.SERVER_URL}/api/auth/logout`);
+    await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/auth/logout`);
     window.location.href = "/";
   };
 

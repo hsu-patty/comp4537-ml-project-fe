@@ -13,7 +13,7 @@ const Recommendations = () => {
       const input = { input: gameName };
       // Correct variable name to `response`
       const response = await axios.post(
-        `${process.env.SERVER_URL}/api/generate`,
+        `${process.env.REACT_APP_SERVER_URL}/api/generate`,
         input
       );
 
