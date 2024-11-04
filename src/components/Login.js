@@ -15,7 +15,7 @@ const Login = () => {
         { withCredentials: true }
       );
       //set number of api calls
-      localStorage.setItem("api Calls", response.data.apiCalls);
+      localStorage.setItem("apiCalls", response.data.apiCalls);
 
       //see if the user is admin
       if (response.data.isAdmin) {
