@@ -9,7 +9,7 @@ const Dashboard = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.post(`${process.env.REACT_APP_SERVER_URL}/logout`, {}, {
+      await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/auth/logout`, {}, {
         withCredentials: true,
       });
       navigate("/");
