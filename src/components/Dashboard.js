@@ -4,15 +4,16 @@ import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const [apiStatus, setApiStatus] = useState("");
-  const [error, setError] = useState("");
+  //const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleLogout = async () => {
-    await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/auth/logout`,
+    await axios.post(
+      `${process.env.REACT_APP_SERVER_URL}/api/auth/logout`,
       {},
       { withCredentials: true }
     );
-    navigate("/")
+    navigate("/");
   };
 
   useEffect(() => {
@@ -27,13 +28,15 @@ const Dashboard = () => {
         <div className="card-body text-center">
           <h5 className="card-title">Dashboard Status</h5>
           <p className="card-text">{apiStatus}</p>
-          {error && <div className="alert alert-danger">{error}</div>}
+
           <button className="btn btn-danger" onClick={handleLogout}>
             Logout
           </button>
         </div>
-        <div className='card-body text-center'>
-          <a href='/recommendations' className='btn btn-primary'>Recommendations</a>
+        <div className="card-body text-center">
+          <a href="/recommendations" className="btn btn-primary">
+            Recommendations
+          </a>
         </div>
       </div>
     </div>
