@@ -16,8 +16,6 @@ const Login = () => {
         { email, password }
       );
       
-      document.cookie = `authToken=${response.data.token}; max-age=3600; path=/`;
-      
       localStorage.setItem("apiCalls", response.data.apiCalls);
 
       if (response.data.isAdmin) {

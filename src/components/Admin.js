@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { getCookie } from "../util";
 
 const Admin = () => {
   const [users, setUsers] = useState([]);
@@ -10,13 +9,10 @@ const Admin = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const token = getCookie("authToken");
         const response = await axios.get(
           `${process.env.REACT_APP_SERVER_URL}/api/admin`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+          {}, {
+            withCredentials: true,
           }
         );
         setUsers(response.data);
@@ -29,11 +25,17 @@ const Admin = () => {
       }
     };
     fetchUsers();
-  }, [navigate]);
+  }, []);
 
   const handleLogout = async () => {
-    document.cookie = "authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    navigate("/");
+    try {
+      await axios.post(`${process.env.REACT_APP_SERVER_URL}/logout`, {}, {
+        withCredentials: true,
+      });
+      navigate("/");
+    } catch (error) {
+      console.error("Failed to log out:", error);
+    }
   };
 
   return (

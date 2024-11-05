@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { getCookie } from "../util";
 
 const Recommendations = () => {
   const [apiStatus, setApiStatus] = useState("");
@@ -11,16 +10,13 @@ const Recommendations = () => {
 
   const handleGenerateRecommendations = async () => {
     try {
-      const token = getCookie("authToken");
       const input = { input: gameName };
 
       const response = await axios.post(
         `${process.env.REACT_APP_SERVER_URL}/api/generate`,
         input,
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          withCredentials: true,
         }
       );
 
