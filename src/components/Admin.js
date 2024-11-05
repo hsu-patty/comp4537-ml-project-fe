@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { getCookie } from "../util";
 
 const Admin = () => {
   const [users, setUsers] = useState([]);
@@ -8,25 +9,32 @@ const Admin = () => {
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const response = await axios.get(
-        `${process.env.REACT_APP_SERVER_URL}/api/admin`,
-        {
-          withCredentials: true,
+      try {
+        const token = getCookie("authToken");
+        const response = await axios.get(
+          `${process.env.REACT_APP_SERVER_URL}/api/admin`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setUsers(response.data);
+      } catch (error) {
+        if (error.response && error.response.status === 401) {
+          navigate("/login");
+        } else {
+          console.error("Failed to fetch users:", error);
         }
-      );
-      setUsers(response.data);
+      }
     };
     fetchUsers();
-  }, []);
+  }, [navigate]);
 
   const handleLogout = async () => {
-    await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/auth/logout`,
-      {},
-      { withCredentials: true }
-    );
-    navigate("/")
+    document.cookie = "authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    navigate("/");
   };
-
 
   return (
     <div className="container my-5">

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { getCookie } from "../util";
 
 const Recommendations = () => {
   const [apiStatus, setApiStatus] = useState("");
@@ -10,17 +11,19 @@ const Recommendations = () => {
 
   const handleGenerateRecommendations = async () => {
     try {
+      const token = getCookie("authToken");
       const input = { input: gameName };
-      // Correct variable name to `response`
+
       const response = await axios.post(
         `${process.env.REACT_APP_SERVER_URL}/api/generate`,
-        input
+        input,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
-      // Log the entire response to verify the structure and data
-      console.log("Response from /generate:", response);
-
-      // Update logic to check the correct variable name
       if (response.data.images && response.data.recommended_games) {
         setImages(response.data.images);
         setRecommendedGames(response.data.recommended_games);
@@ -31,7 +34,7 @@ const Recommendations = () => {
       }
     } catch (err) {
       setError("Failed to fetch recommendations. Please try again.");
-      console.error("Error during API call:", err); // Log the entire error object
+      console.error("Error during API call:", err);
       if (err.response) {
         console.error("Server responded with:", err.response.data);
       }
@@ -39,7 +42,7 @@ const Recommendations = () => {
   };
 
   useEffect(() => {
-    const apiCalls = localStorage.getItem("apiCalls");
+    const apiCalls = localStorage.getItem("apiCalls") || 0;
     setApiStatus(`API Calls Used: ${apiCalls}`);
   }, []);
 

@@ -8,14 +8,16 @@ const Login = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_SERVER_URL}/api/auth/login`,
-        { email, password },
-        { withCredentials: true }
+        { email, password }
       );
+      
+      document.cookie = `authToken=${response.data.token}; max-age=3600; path=/`;
+      
       localStorage.setItem("apiCalls", response.data.apiCalls);
 
       if (response.data.isAdmin) {
@@ -24,14 +26,14 @@ const Login = () => {
         navigate("/dashboard");
       }
     } catch (err) {
-      setError(err.response.data.error);
+      setError(err.response?.data?.error || "Login failed. Please try again.");
     }
   };
 
   return (
     <div className="container my-5">
       <h1 className="text-center">Login</h1>
-      <form onSubmit={handleSubmit} className="w-50 mx-auto">
+      <form onSubmit={handleLogin} className="w-50 mx-auto">
         <div className="mb-3">
           <label className="form-label">Email:</label>
           <input

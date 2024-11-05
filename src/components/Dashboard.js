@@ -7,12 +7,9 @@ const Dashboard = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleLogout = async () => {
-    await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/auth/logout`,
-      {},
-      { withCredentials: true }
-    );
-    navigate("/")
+  const handleLogout = () => {
+    document.cookie = "authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    navigate("/");
   };
 
   useEffect(() => {

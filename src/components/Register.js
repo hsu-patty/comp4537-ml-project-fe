@@ -14,12 +14,14 @@ const Register = () => {
         {
           email,
           password,
-        },
-        { withCredentials: true }
+        }
       );
       setMessage("Registration successful! You can now log in.");
+      setEmail("");
+      setPassword("");
     } catch (err) {
-      setMessage(err.response.data.error);
+      const errorMessage = err.response?.data?.error || "Registration failed. Please try again.";
+      setMessage(errorMessage);
     }
   };
 
