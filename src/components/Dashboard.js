@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigation } from "react-router-dom";
 
 const Dashboard = () => {
   const [apiStatus, setApiStatus] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigation();
 
   const handleLogout = async () => {
     await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/auth/logout`,
       {},
       { withCredentials: true }
     );
-    window.location.href = "/";
+    navigate("/")
   };
 
   useEffect(() => {

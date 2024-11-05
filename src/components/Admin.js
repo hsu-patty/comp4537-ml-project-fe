@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigation } from "react-router-dom";
 
 const Admin = () => {
   const [users, setUsers] = useState([]);
+  const navigate = useNavigation();
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -22,7 +24,7 @@ const Admin = () => {
       {},
       { withCredentials: true }
     );
-    window.location.href = "/";
+    navigate("/")
   };
 
 

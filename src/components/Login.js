@@ -28,14 +28,6 @@ const Login = () => {
     }
   };
 
-  const handleLogout = async () => {
-    await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/auth/logout`,
-      {},
-      { withCredentials: true }
-    );
-    window.location.href = "/";
-  };
-
   return (
     <div className="container my-5">
       <h1 className="text-center">Login</h1>
@@ -65,10 +57,6 @@ const Login = () => {
           Login
         </button>
       </form>
-
-      <button className="btn btn-danger" onClick={handleLogout}>
-            Logout
-          </button>
     </div>
   );
 };
