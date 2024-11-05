@@ -32,7 +32,6 @@ const Dashboard = () => {
             withCredentials: true,
           }
         );
-        setUsers(response.data);
       } catch (error) {
         if (error.response && error.response.status === 401) {
           console.log("error 401");
