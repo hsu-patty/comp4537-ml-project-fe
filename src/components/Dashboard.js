@@ -6,6 +6,7 @@ const Dashboard = () => {
   const [apiStatus, setApiStatus] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const [isAdmin, setIsAdmin] = useState(false)
 
   const handleLogout = async () => {
     try {
@@ -32,12 +33,12 @@ const Dashboard = () => {
             withCredentials: true,
           }
         );
+        if(response.data && response.data.length>0) setIsAdmin(true)
       } catch (error) {
         if (error.response && error.response.status === 401) {
-          console.log("error 401");
-          
+          setIsAdmin(false)
         } else if (error.response && error.response.status === 403) {
-          console.log("error 403");         
+          setIsAdmin(false)   
         }       
         else {
           console.error("Failed to fetch users:", error);
@@ -54,6 +55,7 @@ const Dashboard = () => {
         <div className="card-body text-center">
           <h5 className="card-title">Dashboard Status</h5>
           <p className="card-text">{apiStatus}</p>
+          <p className="card-text">User type:{isAdmin?"Admin":"Regular user"}</p>
           {error && <div className="alert alert-danger">{error}</div>}
           <button className="btn btn-danger" onClick={handleLogout}>
             Logout
