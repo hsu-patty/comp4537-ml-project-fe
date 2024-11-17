@@ -6,6 +6,7 @@ import Dashboard from "./components/Dashboard";
 import Admin from "./components/Admin";
 import Home from "./components/Home";
 import Recommendations from "./components/Recommendations";
+import EditUser from "./components/EditUser";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import ProtectedRoute from "./components/protectedRoute";
@@ -44,6 +45,7 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+        <Route path="/edit-user" element={<EditUser />} />
       </Routes>
     </Router>
   );

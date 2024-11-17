@@ -6,8 +6,19 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
 
+  const validateEmail = (email) => {
+    const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    return regex.test(email);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!validateEmail(email)) {
+      setMessage("Please enter a valid email address.");
+      return;
+    }
+
     try {
       await axios.post(
         `${process.env.REACT_APP_SERVER_URL}/api/auth/register`,
@@ -21,7 +32,8 @@ const Register = () => {
       setEmail("");
       setPassword("");
     } catch (err) {
-      const errorMessage = err.response?.data?.error || "Registration failed. Please try again.";
+      const errorMessage =
+        err.response?.data?.error || "Registration failed. Please try again.";
       setMessage(errorMessage);
     }
   };
