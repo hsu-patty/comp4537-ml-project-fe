@@ -6,6 +6,7 @@ const EditUser = () => {
   const [password, setPassword] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
   const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
     const fetchUserDetails = async () => {
@@ -17,6 +18,8 @@ const EditUser = () => {
           }
         );
         setEmail(response.data.email);
+        const apiCalls = response.data.apiCalls;
+        localStorage.setItem("apiCalls", apiCalls);
       } catch (error) {
         console.error("Failed to fetch user info:", error);
         setError("Failed to fetch user details.");
@@ -46,7 +49,11 @@ const EditUser = () => {
           withCredentials: true,
         }
       );
-      alert("Profile updated successfully.");
+      const apiCalls = response.data.apiCalls;
+      localStorage.setItem("apiCalls", apiCalls);
+      setSuccessMessage("Profile updated successfully.");
+      setPassword("");
+      setCurrentPassword("");
     } catch (error) {
       console.error("Update failed:", error);
       alert("Please make sure you entered your current password correctly.");
@@ -57,6 +64,7 @@ const EditUser = () => {
     <div className="container my-5">
       <h2 className="text-center">Edit Your Profile</h2>
       {error && <div className="alert alert-danger">{error}</div>}
+      {successMessage && <div className="alert alert-success">{successMessage}</div>}
       <div className="card mt-4">
         <div className="card-body">
           <form onSubmit={handleSubmit}>

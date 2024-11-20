@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 const Admin = () => {
   const [users, setUsers] = useState([]);
   const [overallApiStats, setOverallApiStats] = useState([]);
+  const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -16,16 +18,22 @@ const Admin = () => {
             withCredentials: true,
           }
         );
+
         setUsers(response.data.users);
         setOverallApiStats(response.data.overallApiStats);
+
+        const apiCalls = response.data.apiCalls;
+        localStorage.setItem("apiCalls", apiCalls);
       } catch (error) {
         if (error.response && error.response.status === 401) {
-          console.error("admin users only");
+          setError("Access denied. Admins only.");
         } else {
-          console.error("Failed to fetch users:", error);
+          setError("Failed to fetch users and API stats. Please try again.");
         }
+        console.error("Failed to fetch admin data:", error);
       }
     };
+
     fetchUsers();
   }, []);
 
@@ -40,7 +48,8 @@ const Admin = () => {
       );
       navigate("/");
     } catch (error) {
-      console.error("Failed to log out:", error);
+      setError("Failed to log out. Please try again.");
+      console.error("Logout error:", error);
     }
   };
 
@@ -57,7 +66,9 @@ const Admin = () => {
           }
         );
         setUsers(users.filter((user) => user._id !== userId));
+        setSuccessMessage("User deleted successfully.");
       } catch (error) {
+        setError("Failed to delete user. Please try again.");
         console.error("Failed to delete user:", error);
       }
     }
@@ -67,7 +78,9 @@ const Admin = () => {
     <div className="container my-5">
       <h1 className="text-center">Admin Dashboard</h1>
 
-      {/* Display overall total API usage by endpoint and method */}
+      {error && <div className="alert alert-danger">{error}</div>}
+      {successMessage && <div className="alert alert-success">{successMessage}</div>}
+
       <div className="card mt-4">
         <div className="card-body">
           <h5 className="card-title">
@@ -99,7 +112,7 @@ const Admin = () => {
             {users.map((user) => (
               <li
                 className="list-group-item d-flex justify-content-between align-items-center"
-                key={user.email}
+                key={user._id}
               >
                 <div>
                   <strong>User Email:</strong> {user.email} <br />

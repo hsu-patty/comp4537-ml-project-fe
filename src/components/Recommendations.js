@@ -23,6 +23,9 @@ const Recommendations = () => {
       if (response.data.images && response.data.recommended_games) {
         setImages(response.data.images);
         setRecommendedGames(response.data.recommended_games);
+        const apiCalls = response.data.apiCalls;
+        localStorage.setItem("apiCalls", apiCalls);
+        setApiStatus(`API Calls Used: ${apiCalls}`);
         setError(""); // Clear any previous errors
       } else {
         setError("Unexpected response format");
@@ -77,7 +80,12 @@ const Recommendations = () => {
         {recommendedGames.map((game, index) => (
           <div key={index} className="col-md-4 mb-4">
             <div className="card">
-              <img src={images[index]} alt={game} className="card-img-top" />
+              <img
+                src={images[index]}
+                alt={game}
+                className="card-img-top"
+                style={{ height: "200px", objectFit: "cover" }}
+              />
               <div className="card-body text-center">
                 <h5 className="card-title">{game}</h5>
               </div>

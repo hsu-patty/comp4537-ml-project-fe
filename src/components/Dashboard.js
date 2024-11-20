@@ -19,37 +19,40 @@ const Dashboard = () => {
       );
       navigate("/");
     } catch (error) {
-      console.error("Failed to log out:", error);
+      setError("Failed to log out. Please try again.");
+      console.error("Logout error:", error);
     }
   };
 
+  // Fetch API call status and user type
   useEffect(() => {
-    const apiCalls = localStorage.getItem("apiCalls");
-    setApiStatus(`API Calls Used: ${apiCalls}`);
-  }, []);
-
-  useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchDashboardData = async () => {
       try {
+        // Make a GET request to the admin endpoint
         const response = await axios.get(
-          `${process.env.REACT_APP_SERVER_URL}/api/admin`,
+          `${process.env.REACT_APP_SERVER_URL}/api/auth/get-user`,
           {
             withCredentials: true,
           }
         );
-        if (response.data && response.data.length > 0) setIsAdmin(true);
+
+        console.log("response!", response.data);
+        
+        // Update apiCalls in localStorage and the component state
+        const apiCalls = response.data.apiCalls;
+        localStorage.setItem("apiCalls", apiCalls);
+        setApiStatus(`API Calls Used: ${apiCalls}`);
+
+        // Check if the user is an admin
+        setIsAdmin(response.data && response.data.isAdmin);
       } catch (error) {
-        if (error.response && error.response.status === 401) {
-          setIsAdmin(false);
-        } else if (error.response && error.response.status === 403) {
-          setIsAdmin(false);
-        } else {
-          console.error("Failed to fetch users:", error);
-        }
+          setError("Failed to fetch user type. Please try again.");
+          console.error("Error fetching user type:", error);
       }
     };
-    fetchUsers();
-  }, [navigate]);
+
+    fetchDashboardData();
+  }, []);
 
   return (
     <div className="container my-5">
@@ -58,14 +61,12 @@ const Dashboard = () => {
         <div className="card-body text-center">
           <h5 className="card-title">Dashboard Status</h5>
           <p className="card-text">{apiStatus}</p>
-          <p className="card-text">
-            User type:{isAdmin ? "Admin" : "Regular user"}
-          </p>
+          <p className="card-text">User type: {isAdmin ? "Admin" : "Regular user"}</p>
           {error && <div className="alert alert-danger">{error}</div>}
         </div>
         <div className="card-body text-center">
           <a href="/recommendations" className="btn btn-primary">
-            Recommendations
+            View Recommendations
           </a>
         </div>
         <div className="card-body text-center">
