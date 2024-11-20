@@ -2,33 +2,17 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const Dashboard = () => {
+const Dashboard = ({ handleLogout }) => {
   const [apiStatus, setApiStatus] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const [isAdmin, setIsAdmin] = useState(false);
 
-  const handleLogout = async () => {
-    try {
-      await axios.post(
-        `${process.env.REACT_APP_SERVER_URL}/api/auth/logout`,
-        {},
-        {
-          withCredentials: true,
-        }
-      );
-      navigate("/");
-    } catch (error) {
-      setError("Failed to log out. Please try again.");
-      console.error("Logout error:", error);
-    }
-  };
-
   // Fetch API call status and user type
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        // Make a GET request to the admin endpoint
+        // Make a GET request to the get-user endpoint
         const response = await axios.get(
           `${process.env.REACT_APP_SERVER_URL}/api/auth/get-user`,
           {
@@ -36,8 +20,6 @@ const Dashboard = () => {
           }
         );
 
-        console.log("response!", response.data);
-        
         // Update apiCalls in localStorage and the component state
         const apiCalls = response.data.apiCalls;
         localStorage.setItem("apiCalls", apiCalls);
@@ -46,8 +28,8 @@ const Dashboard = () => {
         // Check if the user is an admin
         setIsAdmin(response.data && response.data.isAdmin);
       } catch (error) {
-          setError("Failed to fetch user type. Please try again.");
-          console.error("Error fetching user type:", error);
+        setError("Failed to fetch user type. Please try again.");
+        console.error("Error fetching user type:", error);
       }
     };
 

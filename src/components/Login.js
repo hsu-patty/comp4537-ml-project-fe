@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { API_LIMIT } from "../constant";
 
-const Login = () => {
+const Login = ({setApiCallLimitReached}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -17,7 +18,15 @@ const Login = () => {
         { withCredentials: true }
       );
       
-      localStorage.setItem("apiCalls", response.data.apiCalls);
+      const apiCalls = response.data.apiCalls;
+
+      localStorage.setItem("apiCalls", apiCalls);
+
+      if (apiCalls >= API_LIMIT) {
+        setApiCallLimitReached(true); 
+      } else {
+        setApiCallLimitReached(false);
+      }
 
       if (response.data.isAdmin) {
         navigate("/admin");

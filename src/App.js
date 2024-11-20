@@ -10,18 +10,44 @@ import EditUser from "./components/EditUser";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import ProtectedRoute from "./components/protectedRoute";
-
-const API_LIMIT = 20;
+import axios from "axios";
+import { API_LIMIT } from "./constant";
 
 const App = () => {
   const [apiCallLimitReached, setApiCallLimitReached] = useState(false);
 
-  useEffect(() => {
-    const apiCalls = parseInt(localStorage.getItem("apiCalls") || "0", 10);
 
-    if (apiCalls >= API_LIMIT) {
-      setApiCallLimitReached(true);
+  const handleLogout = async () => {
+    try {
+      await axios.post(
+        `${process.env.REACT_APP_SERVER_URL}/api/auth/logout`,
+        {},
+        {
+          withCredentials: true,
+        }
+      );
+      localStorage.removeItem("apiCalls");
+      setApiCallLimitReached(false);
+  
+      window.location.href = "/";
+    } catch (error) {
+      console.error("Logout error:", error);
     }
+  };
+
+  useEffect(() => {
+    const updateApiLimitState = () => {
+      const apiCalls = parseInt(localStorage.getItem("apiCalls") || "0", 10);
+      setApiCallLimitReached(apiCalls >= API_LIMIT);
+    };
+
+    updateApiLimitState();
+
+    window.addEventListener("storage", updateApiLimitState);
+
+    return () => {
+      window.removeEventListener("storage", updateApiLimitState);
+    };
   }, []);
 
   return (
@@ -34,16 +60,16 @@ const App = () => {
 
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
+        <Route
+  path="/login"
+  element={<Login setApiCallLimitReached={setApiCallLimitReached} />}
+/>
         <Route path="/register" element={<Register />} />
-        {/* <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/admin" element={<Admin />} />
-        <Route path="/recommendations" element={<Recommendations />} /> */}
         <Route
           path="/dashboard"
           element={
             <ProtectedRoute>
-              <Dashboard />
+              <Dashboard handleLogout={handleLogout} />
             </ProtectedRoute>
           }
         />
@@ -51,7 +77,7 @@ const App = () => {
           path="/admin"
           element={
             <ProtectedRoute>
-              <Admin />
+              <Admin handleLogout={handleLogout} />
             </ProtectedRoute>
           }
         />

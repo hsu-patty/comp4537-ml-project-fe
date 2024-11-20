@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const Admin = () => {
+const Admin = ({handleLogout}) => {
   const [users, setUsers] = useState([]);
   const [overallApiStats, setOverallApiStats] = useState([]);
   const [error, setError] = useState("");
@@ -37,21 +37,6 @@ const Admin = () => {
     fetchUsers();
   }, []);
 
-  const handleLogout = async () => {
-    try {
-      await axios.post(
-        `${process.env.REACT_APP_SERVER_URL}/api/auth/logout`,
-        {},
-        {
-          withCredentials: true,
-        }
-      );
-      navigate("/");
-    } catch (error) {
-      setError("Failed to log out. Please try again.");
-      console.error("Logout error:", error);
-    }
-  };
 
   const handleDelete = async (userId) => {
     const confirmDelete = window.confirm(

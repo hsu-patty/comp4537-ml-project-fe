@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const Home = () => {
+  localStorage.setItem("apiCalls", 0);
   return (
     <div className="container my-5 text-center">
       <h1>Welcome to Game Rec!</h1>
