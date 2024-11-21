@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+const MESSAGES = require("../lang/messages/en/user");
 
 const EditUser = () => {
   const [email, setEmail] = useState("");
@@ -22,7 +23,7 @@ const EditUser = () => {
         localStorage.setItem("apiCalls", apiCalls);
       } catch (error) {
         console.error("Failed to fetch user info:", error);
-        setError("Failed to fetch user details.");
+        setError(MESSAGES.FAIL_TO_FETCH_USER_DETAIL);
       }
     };
 
@@ -33,7 +34,7 @@ const EditUser = () => {
     e.preventDefault();
 
     if (!currentPassword) {
-      alert("Please enter your current password.");
+      alert(MESSAGES.PASSWORD_ALERT);
       return;
     }
 
@@ -51,12 +52,12 @@ const EditUser = () => {
       );
       const apiCalls = response.data.apiCalls;
       localStorage.setItem("apiCalls", apiCalls);
-      setSuccessMessage("Profile updated successfully.");
+      setSuccessMessage(MESSAGES.UPDATE_SUCCESS);
       setPassword("");
       setCurrentPassword("");
     } catch (error) {
       console.error("Update failed:", error);
-      alert("Please make sure you entered your current password correctly.");
+      alert(MESSAGES.INCORRECT_PASSWORD_ALERT);
     }
   };
 

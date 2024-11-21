@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+const MESSAGES = require("../lang/messages/en/user");
 
 const Dashboard = ({ handleLogout }) => {
   const [apiStatus, setApiStatus] = useState("");
@@ -23,12 +24,13 @@ const Dashboard = ({ handleLogout }) => {
         // Update apiCalls in localStorage and the component state
         const apiCalls = response.data.apiCalls;
         localStorage.setItem("apiCalls", apiCalls);
-        setApiStatus(`API Calls Used: ${apiCalls}`);
+        //setApiStatus(`API Calls Used: ${apiCalls}`);
+        setApiStatus(MESSAGES.API_STATUS.replace("%1", apiCalls));
 
         // Check if the user is an admin
         setIsAdmin(response.data && response.data.isAdmin);
       } catch (error) {
-        setError("Failed to fetch user type. Please try again.");
+        setError(MESSAGES.FAIL_TO_DELETE_ERROR);
         console.error("Error fetching user type:", error);
       }
     };

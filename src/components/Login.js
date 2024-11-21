@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { API_LIMIT } from "../constant";
 
-const Login = ({setApiCallLimitReached}) => {
+const Login = ({ setApiCallLimitReached }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -17,13 +17,13 @@ const Login = ({setApiCallLimitReached}) => {
         { email, password },
         { withCredentials: true }
       );
-      
+
       const apiCalls = response.data.apiCalls;
 
       localStorage.setItem("apiCalls", apiCalls);
 
       if (apiCalls >= API_LIMIT) {
-        setApiCallLimitReached(true); 
+        setApiCallLimitReached(true);
       } else {
         setApiCallLimitReached(false);
       }
