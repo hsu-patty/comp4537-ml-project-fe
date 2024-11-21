@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-const MESSAGES = require("../lang/messages/en/user");
+import MESSAGES from "../lang/messages/en/user";
 
 const EditUser = () => {
   const [email, setEmail] = useState("");

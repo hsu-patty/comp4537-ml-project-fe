@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import MESSAGES from "../lang/messages/en/user";
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -15,7 +16,7 @@ const Register = () => {
     e.preventDefault();
 
     if (!validateEmail(email)) {
-      setMessage("Please enter a valid email address.");
+      setMessage(MESSAGES.INVALID_EMAIL);
       return;
     }
 
@@ -28,12 +29,12 @@ const Register = () => {
         },
         { withCredentials: true }
       );
-      setMessage("Registration successful! You can now log in.");
+      setMessage(MESSAGES.REGISTER_SUCCESS);
       setEmail("");
       setPassword("");
     } catch (err) {
       const errorMessage =
-        err.response?.data?.error || "Registration failed. Please try again.";
+        err.response?.data?.error || MESSAGES.REGISTER_FAIL;
       setMessage(errorMessage);
     }
   };

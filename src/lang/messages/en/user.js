@@ -25,11 +25,19 @@ const MESSAGES = {
     //success
     UPDATE_SUCCESS: "Profile updated successfully.",
 
-    /** For Home.js */
     /** For Login.js */
-    /** For protectedRoute.js */
+    LOGIN_FAIL: "Login failed. Please try again.",
+
     /** For Recommandation.js */
+    UNEXPECTED_RESPONSE_FORMAT: "Unexpected response format",
+    FAIL_TO_FETCH_RECOMMENDATION: "Failed to fetch recommendations. Please try again.",
+    INPUT_PLACEHOLDER: "Enter game names (comma-separated)",
+
     /** For Register.js */
+    INVALID_EMAIL: "Please enter a valid email address.",
+    REGISTER_SUCCESS: "Registration successful! You can now log in.",
+    REGISTER_FAIL: "Registration failed. Please try again.",
+
 };
 
 module.exports = MESSAGES;

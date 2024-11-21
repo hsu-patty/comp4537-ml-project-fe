@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import MESSAGES from "../lang/messages/en/user";
 
 const Recommendations = () => {
   const [apiStatus, setApiStatus] = useState("");
@@ -23,14 +24,14 @@ const Recommendations = () => {
         setRecommendationSets(response.data);
         const apiCalls = response.data.apiCalls;
         localStorage.setItem("apiCalls", apiCalls);
-        setApiStatus(`API Calls Used: ${apiCalls}`);
+        setApiStatus(MESSAGES.API_STATUS.replace("%1", apiCalls));
         setError(""); // Clear any previous errors
       } else {
-        setError("Unexpected response format");
+        setError(MESSAGES.UNEXPECTED_RESPONSE_FORMAT);
         console.error("Unexpected response format:", response.data);
       }
     } catch (err) {
-      setError("Failed to fetch recommendations. Please try again.");
+      setError(MESSAGES.FAIL_TO_FETCH_RECOMMENDATION);
       console.error("Error during API call:", err);
       if (err.response) {
         console.error("Server responded with:", err.response.data);
@@ -40,7 +41,7 @@ const Recommendations = () => {
 
   useEffect(() => {
     const apiCalls = localStorage.getItem("apiCalls") || 0;
-    setApiStatus(`API Calls Used: ${apiCalls}`);
+    setApiStatus(MESSAGES.API_STATUS.replace("%1", apiCalls));
   }, []);
 
   return (
@@ -55,7 +56,7 @@ const Recommendations = () => {
           <input
             type="text"
             id="input"
-            placeholder="Enter game names (comma-separated)"
+            placeholder={MESSAGES.INPUT_PLACEHOLDER}
             className="form-control my-3"
             value={gameName}
             onChange={(e) => setGameName(e.target.value)}

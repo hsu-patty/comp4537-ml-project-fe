@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-const MESSAGES = require("../lang/messages/en/user");
+import MESSAGES from "../lang/messages/en/user";
 
 const Admin = ({ handleLogout }) => {
   const [users, setUsers] = useState([]);

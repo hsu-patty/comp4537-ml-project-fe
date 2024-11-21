@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { API_LIMIT } from "../constant";
+import MESSAGES from "../lang/messages/en/user";
 
 const Login = ({ setApiCallLimitReached }) => {
   const [email, setEmail] = useState("");
@@ -34,7 +35,7 @@ const Login = ({ setApiCallLimitReached }) => {
         navigate("/dashboard");
       }
     } catch (err) {
-      setError(err.response?.data?.error || "Login failed. Please try again.");
+      setError(err.response?.data?.error || MESSAGES.LOGIN_FAIL);
     }
   };
 
