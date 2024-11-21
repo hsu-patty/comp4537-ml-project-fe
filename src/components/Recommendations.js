@@ -5,8 +5,7 @@ const Recommendations = () => {
   const [apiStatus, setApiStatus] = useState("");
   const [error, setError] = useState("");
   const [gameName, setGameName] = useState("");
-  const [recommendedGames, setRecommendedGames] = useState([]);
-  const [images, setImages] = useState([]);
+  const [recommendationSets, setRecommendationSets] = useState([]);
 
   const handleGenerateRecommendations = async () => {
     try {
@@ -20,9 +19,8 @@ const Recommendations = () => {
         }
       );
 
-      if (response.data.images && response.data.recommended_games) {
-        setImages(response.data.images);
-        setRecommendedGames(response.data.recommended_games);
+      if (Array.isArray(response.data)) {
+        setRecommendationSets(response.data);
         const apiCalls = response.data.apiCalls;
         localStorage.setItem("apiCalls", apiCalls);
         setApiStatus(`API Calls Used: ${apiCalls}`);
@@ -57,7 +55,7 @@ const Recommendations = () => {
           <input
             type="text"
             id="input"
-            placeholder="Enter game name"
+            placeholder="Enter game names (comma-separated)"
             className="form-control my-3"
             value={gameName}
             onChange={(e) => setGameName(e.target.value)}
@@ -76,19 +74,27 @@ const Recommendations = () => {
         </div>
       </div>
 
-      <div className="row mt-5">
-        {recommendedGames.map((game, index) => (
-          <div key={index} className="col-md-4 mb-4">
-            <div className="card">
-              <img
-                src={images[index]}
-                alt={game}
-                className="card-img-top"
-                style={{ height: "200px", objectFit: "cover" }}
-              />
-              <div className="card-body text-center">
-                <h5 className="card-title">{game}</h5>
-              </div>
+      <div className="mt-5">
+        {recommendationSets.map((set, setIndex) => (
+          <div key={setIndex} className="mb-5">
+            <h3 className="text-center">
+              Recommendations for: <strong>{set.matched_game}</strong>
+            </h3>
+            <div className="row mt-4">
+              {set.recommended_games && set.recommended_games.map((game, gameIndex) => (
+                <div key={gameIndex} className="col-md-4 mb-4">
+                  <div className="card">
+                    <img
+                      src={set.images[gameIndex]}
+                      alt={game}
+                      className="card-img-top"
+                    />
+                    <div className="card-body text-center">
+                      <h5 className="card-title">{game}</h5>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         ))}
@@ -98,3 +104,4 @@ const Recommendations = () => {
 };
 
 export default Recommendations;
+
