@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+const MESSAGES = require("../lang/messages/en/user");
 
-const Admin = ({handleLogout}) => {
+const Admin = ({ handleLogout }) => {
   const [users, setUsers] = useState([]);
   const [overallApiStats, setOverallApiStats] = useState([]);
   const [error, setError] = useState("");
@@ -26,9 +27,9 @@ const Admin = ({handleLogout}) => {
         localStorage.setItem("apiCalls", apiCalls);
       } catch (error) {
         if (error.response && error.response.status === 401) {
-          setError("Access denied. Admins only.");
+          setError(MESSAGES.ACCESS_DENY_ERROR);
         } else {
-          setError("Failed to fetch users and API stats. Please try again.");
+          setError(MESSAGES.FETCH_ERROR);
         }
         console.error("Failed to fetch admin data:", error);
       }
@@ -40,7 +41,7 @@ const Admin = ({handleLogout}) => {
 
   const handleDelete = async (userId) => {
     const confirmDelete = window.confirm(
-      "Are you sure you want to delete this user?"
+      MESSAGES.CONFIRM_DELETION
     );
     if (confirmDelete) {
       try {
@@ -51,9 +52,9 @@ const Admin = ({handleLogout}) => {
           }
         );
         setUsers(users.filter((user) => user._id !== userId));
-        setSuccessMessage("User deleted successfully.");
+        setSuccessMessage(MESSAGES.USER_DELETE_SUCCESS);
       } catch (error) {
-        setError("Failed to delete user. Please try again.");
+        setError(MESSAGES.FAIL_TO_DELETE_ERROR);
         console.error("Failed to delete user:", error);
       }
     }
