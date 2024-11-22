@@ -20,8 +20,9 @@ const Recommendations = () => {
         }
       );
 
-      if (Array.isArray(response.data)) {
-        setRecommendationSets(response.data);
+
+      if (Array.isArray(response.data.recommendations)) {
+        setRecommendationSets(response.data.recommendations);
         const apiCalls = response.data.apiCalls;
         localStorage.setItem("apiCalls", apiCalls);
         setApiStatus(MESSAGES.API_STATUS.replace("%1", apiCalls));
