@@ -23,7 +23,8 @@ const EditUser = () => {
         localStorage.setItem("apiCalls", apiCalls);
       } catch (error) {
         console.error("Failed to fetch user info:", error);
-        setError(MESSAGES.FAIL_TO_FETCH_USER_DETAIL);
+        //setError(MESSAGES.FAIL_TO_FETCH_USER_DETAIL);
+        setError(`(Code: ${error.response?.status}) ${MESSAGES.FAIL_TO_FETCH_USER_DETAIL}`);
       }
     };
 
@@ -52,12 +53,14 @@ const EditUser = () => {
       );
       const apiCalls = response.data.apiCalls;
       localStorage.setItem("apiCalls", apiCalls);
-      setSuccessMessage(MESSAGES.UPDATE_SUCCESS);
+      //setSuccessMessage(MESSAGES.UPDATE_SUCCESS);
+      setSuccessMessage(`(Code: ${response.status}) ${MESSAGES.UPDATE_SUCCESS}`);
       setPassword("");
       setCurrentPassword("");
     } catch (error) {
       console.error("Update failed:", error);
-      alert(MESSAGES.INCORRECT_PASSWORD_ALERT);
+      //alert(MESSAGES.INCORRECT_PASSWORD_ALERT);
+      alert(`(Code: ${error.response?.status}) ${MESSAGES.INCORRECT_PASSWORD_ALERT}`);
     }
   };
 

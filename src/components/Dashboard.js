@@ -30,7 +30,8 @@ const Dashboard = ({ handleLogout }) => {
         // Check if the user is an admin
         setIsAdmin(response.data && response.data.isAdmin);
       } catch (error) {
-        setError(MESSAGES.FAIL_TO_DELETE_ERROR);
+        //setError(MESSAGES.FAIL_TO_DELETE_ERROR);
+        setError(`(Code: ${error.response?.status}) ${MESSAGES.FAIL_TO_FETCH_USER_TYPE}`);
         console.error("Error fetching user type:", error);
       }
     };

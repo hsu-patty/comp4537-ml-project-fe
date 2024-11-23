@@ -20,7 +20,6 @@ const Recommendations = () => {
         }
       );
 
-
       if (Array.isArray(response.data.recommendations)) {
         setRecommendationSets(response.data.recommendations);
         const apiCalls = response.data.apiCalls;
@@ -28,11 +27,11 @@ const Recommendations = () => {
         setApiStatus(MESSAGES.API_STATUS.replace("%1", apiCalls));
         setError(""); // Clear any previous errors
       } else {
-        setError(MESSAGES.UNEXPECTED_RESPONSE_FORMAT);
+        setError(`(Code: ${response.status}) ${MESSAGES.UNEXPECTED_RESPONSE_FORMAT}`);
         console.error("Unexpected response format:", response.data);
       }
     } catch (err) {
-      setError(MESSAGES.FAIL_TO_FETCH_RECOMMENDATION);
+      setError(`(Code: ${err.response?.status}) ${MESSAGES.FAIL_TO_FETCH_RECOMMENDATION}`);
       console.error("Error during API call:", err);
       if (err.response) {
         console.error("Server responded with:", err.response.data);

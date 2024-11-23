@@ -27,9 +27,11 @@ const Admin = ({ handleLogout }) => {
         localStorage.setItem("apiCalls", apiCalls);
       } catch (error) {
         if (error.response && error.response.status === 401) {
-          setError(MESSAGES.ACCESS_DENY_ERROR);
+          //setError(MESSAGES.ACCESS_DENY_ERROR);
+          setError(`(Code: ${error.response?.status}) ${MESSAGES.ACCESS_DENY_ERROR}`);
         } else {
-          setError(MESSAGES.FETCH_ERROR);
+          //setError(MESSAGES.FETCH_ERROR);
+          setError(`(Code: ${error.response?.status}) ${MESSAGES.FETCH_ERROR}`);
         }
         console.error("Failed to fetch admin data:", error);
       }
@@ -45,16 +47,18 @@ const Admin = ({ handleLogout }) => {
     );
     if (confirmDelete) {
       try {
-        await axios.delete(
+        const response = await axios.delete(
           `${process.env.REACT_APP_SERVER_URL}/api/admin/delete/${userId}`,
           {
             withCredentials: true,
           }
         );
         setUsers(users.filter((user) => user._id !== userId));
-        setSuccessMessage(MESSAGES.USER_DELETE_SUCCESS);
+        //setSuccessMessage(MESSAGES.USER_DELETE_SUCCESS);
+        setSuccessMessage(`(Code: ${response.status}) ${MESSAGES.USER_DELETE_SUCCESS}`);
       } catch (error) {
-        setError(MESSAGES.FAIL_TO_DELETE_ERROR);
+        //setError(MESSAGES.FAIL_TO_DELETE_ERROR);
+        setError(`(Code: ${error.response?.status}) ${MESSAGES.FAIL_TO_DELETE_ERROR}`);
         console.error("Failed to delete user:", error);
       }
     }

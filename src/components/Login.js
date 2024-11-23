@@ -35,7 +35,8 @@ const Login = ({ setApiCallLimitReached }) => {
         navigate("/dashboard");
       }
     } catch (err) {
-      setError(err.response?.data?.error || MESSAGES.LOGIN_FAIL);
+      //setError(err.response?.data?.error || MESSAGES.LOGIN_FAIL);
+      setError(`(Code: ${err.response?.status}) ${MESSAGES.LOGIN_FAIL}`);
     }
   };
 
