@@ -21,7 +21,7 @@ const Register = () => {
     }
 
     try {
-      await axios.post(
+      const response = await axios.post(
         `${process.env.REACT_APP_SERVER_URL}/api/auth/register`,
         {
           email,
@@ -29,13 +29,17 @@ const Register = () => {
         },
         { withCredentials: true }
       );
-      setMessage(MESSAGES.REGISTER_SUCCESS);
+      console.log(response);
+      console.log(response.status);
+      //setMessage(MESSAGES.REGISTER_SUCCESS);
+      setMessage(`(Code: ${response.status}) ${MESSAGES.REGISTER_SUCCESS}`);
       setEmail("");
       setPassword("");
     } catch (err) {
       const errorMessage =
         err.response?.data?.error || MESSAGES.REGISTER_FAIL;
-      setMessage(errorMessage);
+      const code = err.response?.status || "---";
+      setMessage(`(Code: ${code}) ${errorMessage}`);
     }
   };
 
